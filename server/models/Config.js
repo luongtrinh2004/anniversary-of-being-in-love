@@ -61,7 +61,7 @@ const configSchema = new mongoose.Schema(
     promises: [{ type: String }],
     loveCoupons: [loveCouponSchema],
     music: {
-      source: { type: String, default: '/Từng Ngày Yêu Em _ buitruonglinh - (64 Kbps).mp3' },
+      source: { type: String, default: '/music.mp3' },
       volume: { type: Number, default: 0.6 }
     }
   },

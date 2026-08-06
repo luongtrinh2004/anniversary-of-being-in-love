@@ -27,10 +27,13 @@ mongoose
       if (!existing.loveCoupons || existing.loveCoupons.length !== 4) {
         existing.loveCoupons = defaultAnniversaryConfig.loveCoupons;
       }
-      if (!existing.music?.source || existing.music.source.includes('actions.google.com')) {
-        existing.music.source = defaultAnniversaryConfig.music.source;
+      if (!existing.music?.source || existing.music.source.includes('actions.google.com') || existing.music.source.includes('Tu')) {
+        existing.music = {
+          source: '/music.mp3',
+          volume: 0.6
+        };
+        await existing.save();
       }
-      await existing.save();
       console.log('[MongoDB] Updated partnerName to Minh Châu & loveCoupons preset items');
     }
   })

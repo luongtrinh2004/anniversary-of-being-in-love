@@ -138,7 +138,7 @@ export const defaultAnniversaryConfig = {
     }
   ],
   music: {
-    source: "/Từng Ngày Yêu Em _ buitruonglinh - (64 Kbps).mp3",
+    source: "/music.mp3",
     volume: 0.6
   }
 };
