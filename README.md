@@ -1,141 +1,64 @@
-# 💖 timeless-love-anniversary-app - Create Personalized Love Stories Easily
+# 💖 Anniversary Space — Web Kỷ Niệm 3 Năm Yêu Nhau (Minh Châu & Lương Trịnh)
 
-[![Download timeless-love-anniversary-app](https://img.shields.io/badge/Download-timeless--love--anniversary--app-blue?style=for-the-badge&logo=github)](https://github.com/jmcmomic/timeless-love-anniversary-app/releases)
-
----
-
-## 💬 What is timeless-love-anniversary-app?
-
-timeless-love-anniversary-app is a simple and modern web app that helps you create personalized love stories. Use your photos, music, and memories to build a beautiful timeline filled with surprises. The app is designed with a clean interface and smooth animations so you and your partner can enjoy a special anniversary experience.
-
-It uses React for the interactive parts and Tailwind CSS for styling. You don’t need any technical skills to use it. Just follow the instructions below to get started.
+Một ứng dụng Web lãng mạn cao cấp được xây dựng riêng để kỷ niệm 3 năm ngày yêu nhau, tích hợp hệ thống phân quyền (Auth), đếm thời gian thực, thiệp mời 3D, album ảnh kỷ niệm, bình luận vĩnh viễn và cơ sở dữ liệu **MongoDB Local**.
 
 ---
 
-## 🎯 Key Features
+## 🌟 Tính Năng Nổi Bật
 
-- **Create Custom Stories:** Easily add photos, text, and dates to build your love story timeline.
-- **Add Background Music:** Choose romantic music to play while viewing your story.
-- **Photo Gallery:** Display your favorite moments with smooth sliding galleries.
-- **Surprise Elements:** Include hidden messages or animations to make your story unique.
-- **Modern Design:** Enjoy a clean and responsive user interface that works on any device.
-- **Smooth Animations:** Built with framer-motion for gentle and appealing transitions.
+- **Thiệp Mời Hẹn Hò & Đếm Ngược Thời Gian Thực:**
+  - Trang Đăng nhập hiển thị bộ đếm ngược chính xác từng ngày, giờ, phút, giây đến mốc **09/08/2026**.
+  - Bàn phím mã PIN 4 số với lớp mã bảo mật `1096` dành cho **Người Yêu (Minh Châu)** và `6969` dành cho **Quản Trị (Admin)**.
 
----
+- **Không Gian Lãng Mạn Cho Bạn Gái (Role User):**
+  - **Bức Thư Tình 3D**: Phong bì thư 3D với hiệu ứng đánh máy chữ (Typewriter Effect) tự động.
+  - **Love Story Timeline**: Cột mốc 3 năm yêu nhau với hình ảnh & bình luận trực tiếp.
+  - **Album Ảnh Kỷ Niệm**: Cho phép người yêu tự do tải ảnh mới từ máy và xem ảnh chất lượng cao.
+  - **Hệ Thống Bình Luận Nhạc & Ảnh theo Thời Gian Thực**: Lưu bình luận vĩnh viễn vào MongoDB với thông báo chưa đọc (Unread Badge).
+  - **Góc Chọn Quà Sinh Nhật**: Chọn 1 món quà duy nhất hoặc tự nhập ý kiến riêng.
 
-## 🛠 System Requirements
+- **Trang Quản Trị Chi Tiết (Role Admin):**
+  - Quản lý toàn bộ thông tin thiệp, thư tình, album ảnh, dòng thời gian, lời hứa & nhạc nền.
+  - **Theo dõi kết quả chọn quà sinh nhật** và ý kiến riêng của bạn gái cập nhật thời gian thực.
 
-Make sure your computer or device meets these requirements to use the app smoothly:  
-
-- A modern web browser (Chrome, Firefox, Edge, Safari) with JavaScript enabled.
-- Internet connection to load some app features and assets.
-- Desktop or laptop preferred for full experience; tablets and large smartphones supported.
-- Basic screen resolution of 1024x768 or higher for best display.
-
-No installation of special software needed other than the browser.
-
----
-
-## 🚀 Getting Started
-
-Follow these steps to download and run the timeless-love-anniversary-app on your device. It is a web application, so you mostly access it through your browser.
+- **Cơ Sở Dữ Liệu Local MongoDB & Âm Nhạc Autoplay:**
+  - Tích hợp MongoDB Local (`mongodb://127.0.0.1:27017/anniversary_db`) lưu vĩnh viễn mọi dữ liệu.
+  - Phát nhạc tự động bài hát *"Từng Ngày Yêu Em - buitruonglinh"* với trình điều khiển âm thanh singleton.
 
 ---
 
-## ⬇️ Download & Install
+## 🛠 Công Nghệ Sử Dụng
 
-1. **Visit the Download Page**  
-   Go to the official releases page to get the latest version of the app:
-   [Download timeless-love-anniversary-app](https://github.com/jmcmomic/timeless-love-anniversary-app/releases)  
-
-   ![Download badge](https://img.shields.io/badge/Download-timeless--love--anniversary--app-blue?style=for-the-badge&logo=github)
-
-2. **Choose the Latest Release**  
-   - On the releases page, look for the most recent version marked as "Latest".
-   - Open that release to see available files.
-
-3. **Download the Web App**  
-   - If there is a direct link to start the web app or a ZIP file containing it, download it to your computer.
-   - Usually, you will find a link like `index.html` or a folder zip.
-
-4. **Open the App**  
-   - If you downloaded a ZIP, unzip it to a folder.
-   - Double-click the `index.html` file to open the app in your default browser.
-   - If the app requires hosting, you can use free tools like VS Code Live Server, but this is optional.
-
-5. **Start Creating Your Story**  
-   - Once the app opens, follow the on-screen instructions to begin adding your own photos, music, and text.
-   - Enjoy building a timeline that tells your anniversary story.
+- **Frontend**: React 19, Vite, Tailwind CSS, Framer Motion, Lucide React Icons
+- **Backend**: Node.js, Express.js, Mongoose (MongoDB Local)
+- **Database**: MongoDB Local (`anniversary_db`)
 
 ---
 
-## 📝 How to Use the App
+## 🚀 Hướng Dẫn Chạy Dự Án
 
-1. **Add Your Photos**  
-   Click the photo upload button to add memories from your device. Supported formats include JPG, PNG, and GIF.
+### 1. Cài đặt Dependencies
+```bash
+npm install
+```
 
-2. **Create Your Timeline**  
-   Use the timeline editor to insert dates and notes. Each entry can have pictures or short text describing your moments.
+### 2. Khởi chạy Server MongoDB & Vite
+```bash
+npm run dev
+```
 
-3. **Choose Background Music**  
-   You can upload music or select from preloaded tracks. This will play softly as you view your story.
-
-4. **Add Surprises**  
-   Include hidden messages or animations using the "Surprises" feature. This can be a note revealed on click or a simple animation.
-
-5. **View and Share**  
-   Review your finished love story in the app. You can view it yourself or share the link with your partner.
-
----
-
-## ⚙️ Frequently Asked Questions
-
-**Q: Can I use this app offline?**  
-A: The app works best online to load all features, but you can open it offline if you downloaded the files and you do not need dynamic cloud content.
-
-**Q: Do I need an account?**  
-A: No sign-up or login is required. The app works entirely on your device or in your browser.
-
-**Q: What devices are supported?**  
-A: Desktops and laptops offer the best experience. Tablets and large smartphones work but might have layout differences.
-
-**Q: Can I change the background music after starting?**  
-A: Yes, you can switch or remove background music at any time through the music settings.
-
-**Q: How do I save my story?**  
-A: The app saves your session automatically in your browser storage. To keep a permanent copy, you can export your story as a file (if supported by the version).
+Ứng dụng sẽ chạy tại:
+- **Frontend**: `http://localhost:5173` (hoặc `5174`)
+- **Backend API**: `http://localhost:5001`
+- **MongoDB**: `mongodb://127.0.0.1:27017/anniversary_db`
 
 ---
 
-## 🧰 Troubleshooting
+## 🔑 Mật Mã Đăng Nhập
 
-- **App does not load:** Check your internet connection and browser version. Make sure JavaScript is enabled.
-- **Photos not uploading:** Verify the file format and size. Try reducing image size if it’s too large.
-- **Music not playing:** Ensure your browser’s sound is on and the volume is up. Supported audio formats include MP3 and WAV.
-- **Animations lagging:** Close other heavy apps or tabs to free memory. Refresh the page.
-
-If problems persist, visit the issues section on the repository for help or submit a new issue.
+- **User (Người Yêu - Minh Châu)**: `1096`
+- **Admin (Quản Trị - Lương Trịnh)**: `6969`
 
 ---
 
-## 📄 License
-
-This project is open source. You can view the full license details in the LICENSE file in the repository.
-
----
-
-## 🔗 Useful Links
-
-- [Project Repository](https://github.com/jmcmomic/timeless-love-anniversary-app)  
-- [Latest Releases and Downloads](https://github.com/jmcmomic/timeless-love-anniversary-app/releases)  
-- [Report Issues](https://github.com/jmcmomic/timeless-love-anniversary-app/issues)  
-
----
-
-## 📌 Topics
-
-anniversary, anniversary-app, anniversary-website, background-music, cloudinary, couple-app, framer-motion, gift-website, love-app, memory-app, modern-ui, personal-project, photo-gallery, reactjs, romantic-website, tailwindcss, web-application
-
----
-
-Feel free to explore the app and personalize your anniversary memories with timeless-love-anniversary-app.
+*Made with ❤️ by luongtrinh2004*
