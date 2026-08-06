@@ -6,7 +6,7 @@ import { defaultAnniversaryConfig } from './defaultData.js';
 
 const app = express();
 const PORT = process.env.PORT || 5001;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/anniversary_db';
+const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/anniversary_db';
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
