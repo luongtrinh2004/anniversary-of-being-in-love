@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { compressImage } from '../utils/imageCompressor';
 import {
   Heart,
   Music,
@@ -170,25 +171,28 @@ export default function UserAnniversary() {
     setIsSavingWish(false);
   };
 
-  const handleUserPhotoUpload = (e) => {
+  const handleUserPhotoUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     setIsUploadingPhoto(true);
-    const reader = new FileReader();
-    reader.onloadend = async () => {
+    try {
+      const compressedDataUrl = await compressImage(file);
       const newPhoto = {
         id: 'p_' + Date.now(),
-        src: reader.result,
+        src: compressedDataUrl,
         caption: `Khoảnh khắc mới của ${partnerName} & Anh`,
         location: 'Kỷ niệm yêu thương',
         comments: []
       };
       const updatedPhotos = [newPhoto, ...photos];
       await updateConfig({ ...config, photos: updatedPhotos });
+    } catch (err) {
+      console.error('Photo compression failed', err);
+      alert('Không thể tải ảnh. Vui lòng chọn file hình ảnh hợp lệ.');
+    } finally {
       setIsUploadingPhoto(false);
-    };
-    reader.readAsDataURL(file);
+    }
   };
 
   const handleAddComment = async (e) => {

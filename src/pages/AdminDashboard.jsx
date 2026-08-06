@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { compressImage } from '../utils/imageCompressor';
 import {
   Save,
   LogOut,
@@ -82,39 +83,43 @@ export default function AdminDashboard() {
     navigate('/');
   };
 
-  const handlePhotoUpload = (e, index) => {
+  const handlePhotoUpload = async (e, index) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
+    try {
+      const compressedDataUrl = await compressImage(file);
       const newPhotos = [...formData.photos];
       if (index !== undefined) {
-        newPhotos[index].src = reader.result;
+        newPhotos[index].src = compressedDataUrl;
       } else {
         newPhotos.push({
           id: 'p_' + Date.now(),
-          src: reader.result,
+          src: compressedDataUrl,
           caption: 'Ảnh mới thêm',
           location: 'Kỷ niệm'
         });
       }
       setFormData({ ...formData, photos: newPhotos });
-    };
-    reader.readAsDataURL(file);
+    } catch (err) {
+      console.error('Image compression failed', err);
+      alert('Không thể tải ảnh. Vui lòng chọn file hình ảnh JPG/PNG hợp lệ.');
+    }
   };
 
-  const handleTimelinePhotoUpload = (e, index) => {
+  const handleTimelinePhotoUpload = async (e, index) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
+    try {
+      const compressedDataUrl = await compressImage(file);
       const updated = [...(formData.timeline || [])];
-      updated[index].photoUrl = reader.result;
+      updated[index].photoUrl = compressedDataUrl;
       setFormData({ ...formData, timeline: updated });
-    };
-    reader.readAsDataURL(file);
+    } catch (err) {
+      console.error('Image compression failed', err);
+      alert('Không thể tải ảnh mốc kỷ niệm. Vui lòng thử lại.');
+    }
   };
 
   const handleAddTimeline = () => {
@@ -141,6 +146,11 @@ export default function AdminDashboard() {
   const handleMusicFileUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    if (file.size > 15 * 1024 * 1024) {
+      alert('File MP3 quá lớn (vượt quá 15MB). Vui lòng chọn file nhạc nhỏ hơn 15MB!');
+      return;
+    }
 
     const currentPlaylist = formData.music?.playlist?.length
       ? formData.music.playlist
