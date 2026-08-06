@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 let globalAudioInstance = null;
 
@@ -14,8 +14,18 @@ export default function useAudio(sourcesInput, initialVolume = 0.6, autoPlay = t
     ? [{ id: 'm_0', name: 'Từng Ngày Yêu Em', source: sourcesInput }]
     : [{ id: 'm_0', name: 'Từng Ngày Yêu Em', source: '/music.mp3' }];
 
+  const playlistRef = useRef(playlist);
+  const trackIndexRef = useRef(currentTrackIndex);
+
+  useEffect(() => {
+    playlistRef.current = playlist;
+  }, [playlist]);
+
+  useEffect(() => {
+    trackIndexRef.current = currentTrackIndex;
+  }, [currentTrackIndex]);
+
   const activeTrack = playlist[currentTrackIndex] || playlist[0] || { source: '/music.mp3', name: 'Từng Ngày Yêu Em' };
-  const activeSource = activeTrack?.source;
 
   const stopGlobalAudio = () => {
     if (globalAudioInstance) {
@@ -46,21 +56,32 @@ export default function useAudio(sourcesInput, initialVolume = 0.6, autoPlay = t
   };
 
   useEffect(() => {
-    if (!activeSource) return;
+    const firstSource = playlistRef.current[0]?.source || '/music.mp3';
+    if (!firstSource) return;
 
     stopGlobalAudio();
 
-    const audio = new Audio(activeSource);
-    // If only 1 song, loop song continuously; if multiple songs, loop via playlist onended!
-    audio.loop = playlist.length === 1;
+    const audio = new Audio(firstSource);
     audio.volume = volume;
     audio.preload = "auto";
+    audio.loop = playlistRef.current.length === 1;
     globalAudioInstance = audio;
 
-    // Transition 1 -> 2 -> 3 -> 1 when track finishes playing
     const handleEnded = () => {
-      if (playlist.length > 1) {
-        setCurrentTrackIndex((prevIndex) => (prevIndex + 1) % playlist.length);
+      const currentList = playlistRef.current;
+      if (currentList.length > 1) {
+        const nextIndex = (trackIndexRef.current + 1) % currentList.length;
+        const nextTrack = currentList[nextIndex];
+        if (nextTrack && nextTrack.source && globalAudioInstance) {
+          globalAudioInstance.src = nextTrack.source;
+          globalAudioInstance.currentTime = 0;
+          globalAudioInstance.loop = currentList.length === 1;
+          globalAudioInstance
+            .play()
+            .then(() => setIsPlaying(true))
+            .catch((err) => console.warn("Playlist transition play error", err));
+          setCurrentTrackIndex(nextIndex);
+        }
       }
     };
 
@@ -108,7 +129,7 @@ export default function useAudio(sourcesInput, initialVolume = 0.6, autoPlay = t
       }
       setIsPlaying(false);
     };
-  }, [activeSource, currentTrackIndex, playlist.length, autoPlay, volume]);
+  }, [playlist.length, autoPlay]);
 
   const updateVolume = (nextVolume) => {
     setVolume(nextVolume);
