@@ -416,11 +416,13 @@ export default function UserAnniversary() {
         {/* SECTION 2: 3D INTERACTIVE LOVE ENVELOPE */}
         <section className="text-center">
           <div className="mb-4">
-            <h3 className="font-display text-xl sm:text-3xl font-bold text-slate-800 inline-flex items-center justify-center gap-2 text-balance leading-snug">
-              <Mail className="w-6 h-6 text-pink-500 shrink-0 inline-block" />
-              <span>Bức Thư Tình Gửi Em</span>
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <Mail className="w-6 h-6 text-pink-500 shrink-0" />
+              <h3 className="font-display text-xl sm:text-3xl font-bold text-slate-900 leading-snug">
+                Bức Thư Tình Gửi Em
+              </h3>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-500">
               Nhấp vào phong bì bên dưới để mở lá thư tay ngọt ngào từ {creatorName}
             </p>
           </div>
@@ -478,12 +480,14 @@ export default function UserAnniversary() {
 
         {/* SECTION 3: LOVE STORY TIMELINE WITH CLICKABLE TIMELINE PHOTOS */}
         <section className="space-y-6">
-          <div className="text-center">
-            <h3 className="font-display text-xl sm:text-3xl font-bold text-slate-800 inline-flex items-center justify-center gap-2 text-balance leading-snug">
-              <Compass className="w-6 h-6 text-pink-500 shrink-0 inline-block" />
-              <span>Hành Trình 3 Năm Yêu Nhau (Love Timeline)</span>
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">Những cột mốc đáng nhớ nhất ghi dấu tình yêu đôi ta</p>
+          <div className="text-center mb-6">
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <Compass className="w-6 h-6 text-pink-500 shrink-0" />
+              <h3 className="font-display text-xl sm:text-3xl font-bold text-slate-900 leading-snug">
+                Hành Trình 3 Năm Yêu Nhau (Love Timeline)
+              </h3>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-500">Những cột mốc đáng nhớ nhất ghi dấu tình yêu đôi ta</p>
           </div>
 
           <div className="relative border-l-2 border-pink-300 ml-4 sm:ml-32 space-y-8 py-4">
@@ -574,12 +578,14 @@ export default function UserAnniversary() {
 
         {/* SECTION 4: PHOTO GALLERY */}
         <section className="space-y-6">
-          <div className="text-center space-y-2">
-            <h3 className="font-display text-xl sm:text-3xl font-bold text-slate-800 inline-flex items-center justify-center gap-2 text-balance leading-snug">
-              <Camera className="w-6 h-6 text-pink-500 shrink-0 inline-block" />
-              <span>Album Ảnh Kỷ Niệm 2 Đứa</span>
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto text-balance">
+          <div className="text-center space-y-2 mb-6">
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <Camera className="w-6 h-6 text-pink-500 shrink-0" />
+              <h3 className="font-display text-xl sm:text-3xl font-bold text-slate-900 leading-snug">
+                Album Ảnh Kỷ Niệm 2 Đứa
+              </h3>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
               Những bức ảnh lưu giữ khoảnh khắc thanh xuân ngọt ngào của {partnerName} & Anh
             </p>
             <div className="pt-1">
@@ -626,12 +632,14 @@ export default function UserAnniversary() {
 
         {/* SECTION 5: SINGLE-CHOICE BIRTHDAY GIFT SELECTION (4 PRESETS + 1 CUSTOM) */}
         <section className="space-y-6">
-          <div className="text-center space-y-1.5">
-            <h3 className="font-display text-xl sm:text-3xl font-bold text-slate-800 inline-flex items-center justify-center gap-2 text-balance leading-snug">
-              <Gift className="w-6 h-6 text-pink-500 shrink-0 inline-block" />
-              <span>Quà Mong Muốn Sinh Nhật Sắp Tới Của Bé</span>
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto text-balance">
+          <div className="text-center space-y-1.5 mb-6">
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <Gift className="w-6 h-6 text-pink-500 shrink-0" />
+              <h3 className="font-display text-xl sm:text-3xl font-bold text-slate-900 leading-snug">
+                Quà Mong Muốn Sinh Nhật Sắp Tới Của Bé
+              </h3>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
               {partnerName} hãy chọn 1 món quà duy nhất mà em thích nhất nhé! (Chọn ô khác sẽ tự động bỏ chọn ô cũ)
             </p>
           </div>
@@ -734,11 +742,13 @@ export default function UserAnniversary() {
         {/* SECTION 6: PROMISES & STARRY WISHES (WHITE CLEAN THEME) */}
         <section className="bg-white/80 backdrop-blur-xl border border-pink-200 rounded-3xl p-6 sm:p-10 relative overflow-hidden shadow-glow text-slate-800">
           <div className="text-center mb-6">
-            <h3 className="font-display text-xl sm:text-3xl font-bold text-slate-800 inline-flex items-center justify-center gap-2 text-balance leading-snug">
-              <Star className="w-6 h-6 text-yellow-500 fill-yellow-400 shrink-0 inline-block" />
-              <span>Bầu Trời Lời Hứa Chân Thành</span>
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto text-balance mt-1">
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <Star className="w-6 h-6 text-yellow-500 fill-yellow-400 shrink-0" />
+              <h3 className="font-display text-xl sm:text-3xl font-bold text-slate-900 leading-snug">
+                Bầu Trời Lời Hứa Chân Thành
+              </h3>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
               Những điều anh nguyện khắc ghi trong tim cho hành trình tương lai
             </p>
           </div>
