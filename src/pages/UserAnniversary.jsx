@@ -316,7 +316,7 @@ export default function UserAnniversary() {
             >
               <Music className={`w-3.5 h-3.5 ${isPlaying ? 'animate-spin' : ''}`} style={{ animationDuration: '4s' }} />
               <span className="hidden sm:inline">
-                {isPlaying ? `${currentTrackName} (${currentTrackIndex}/${totalTracks})` : 'Phát nhạc'}
+                {isPlaying ? currentTrackName : 'Phát nhạc'}
               </span>
               {isPlaying ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
             </button>
