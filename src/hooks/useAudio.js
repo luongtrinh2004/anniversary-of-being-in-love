@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
 
-// Global audio reference to ensure only ONE track can ever play at any given time across the app
 let globalAudioInstance = null;
 
-export default function useAudio(src, initialVolume = 0.6, autoPlay = true) {
+export default function useAudio(sourcesInput, initialVolume = 0.6, autoPlay = true) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(initialVolume);
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+
+  // Normalize input into a standardized playlist array: [{ id, name, source }]
+  const playlist = Array.isArray(sourcesInput)
+    ? sourcesInput.map((item, idx) => (typeof item === 'string' ? { id: 'm_' + idx, name: `Bài hát ${idx + 1}`, source: item } : item)).filter((item) => item && item.source)
+    : typeof sourcesInput === 'string' && sourcesInput
+    ? [{ id: 'm_0', name: 'Từng Ngày Yêu Em', source: sourcesInput }]
+    : [{ id: 'm_0', name: 'Từng Ngày Yêu Em', source: '/music.mp3' }];
+
+  const activeTrack = playlist[currentTrackIndex] || playlist[0] || { source: '/music.mp3', name: 'Từng Ngày Yêu Em' };
+  const activeSource = activeTrack?.source;
 
   const stopGlobalAudio = () => {
     if (globalAudioInstance) {
@@ -36,16 +46,25 @@ export default function useAudio(src, initialVolume = 0.6, autoPlay = true) {
   };
 
   useEffect(() => {
-    if (!src) return;
+    if (!activeSource) return;
 
-    // Stop any existing audio immediately to prevent duplicate audio tracks playing!
     stopGlobalAudio();
 
-    const audio = new Audio(src);
-    audio.loop = true;
+    const audio = new Audio(activeSource);
+    // If only 1 song, loop song continuously; if multiple songs, loop via playlist onended!
+    audio.loop = playlist.length === 1;
     audio.volume = volume;
     audio.preload = "auto";
     globalAudioInstance = audio;
+
+    // Transition 1 -> 2 -> 3 -> 1 when track finishes playing
+    const handleEnded = () => {
+      if (playlist.length > 1) {
+        setCurrentTrackIndex((prevIndex) => (prevIndex + 1) % playlist.length);
+      }
+    };
+
+    audio.addEventListener("ended", handleEnded);
 
     let hasPlayed = false;
 
@@ -56,7 +75,6 @@ export default function useAudio(src, initialVolume = 0.6, autoPlay = true) {
         hasPlayed = true;
         setIsPlaying(true);
       } catch (err) {
-        // Handle browser autoplay policy by playing on first user gesture
         const onUserGesture = async () => {
           if (globalAudioInstance && !hasPlayed) {
             try {
@@ -82,7 +100,7 @@ export default function useAudio(src, initialVolume = 0.6, autoPlay = true) {
     }
 
     return () => {
-      // Clean up on unmount or logout
+      audio.removeEventListener("ended", handleEnded);
       if (globalAudioInstance === audio) {
         audio.pause();
         audio.currentTime = 0;
@@ -90,7 +108,7 @@ export default function useAudio(src, initialVolume = 0.6, autoPlay = true) {
       }
       setIsPlaying(false);
     };
-  }, [src, autoPlay, volume]);
+  }, [activeSource, currentTrackIndex, playlist.length, autoPlay, volume]);
 
   const updateVolume = (nextVolume) => {
     setVolume(nextVolume);
@@ -102,6 +120,9 @@ export default function useAudio(src, initialVolume = 0.6, autoPlay = true) {
   return {
     isPlaying,
     volume,
+    currentTrackName: activeTrack?.name || 'Từng Ngày Yêu Em',
+    currentTrackIndex: currentTrackIndex + 1,
+    totalTracks: playlist.length,
     play,
     pause,
     updateVolume

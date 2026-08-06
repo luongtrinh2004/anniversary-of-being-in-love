@@ -37,6 +37,15 @@ const loveCouponSchema = new mongoose.Schema(
   { _id: false }
 );
 
+const musicTrackSchema = new mongoose.Schema(
+  {
+    id: { type: String, required: true },
+    name: { type: String, default: 'Bài hát lãng mạn' },
+    source: { type: String, required: true }
+  },
+  { _id: false }
+);
+
 const configSchema = new mongoose.Schema(
   {
     key: { type: String, default: 'active_anniversary_config', unique: true },
@@ -62,7 +71,8 @@ const configSchema = new mongoose.Schema(
     loveCoupons: [loveCouponSchema],
     music: {
       source: { type: String, default: '/music.mp3' },
-      volume: { type: Number, default: 0.6 }
+      volume: { type: Number, default: 0.6 },
+      playlist: [musicTrackSchema]
     }
   },
   { timestamps: true, strict: false }

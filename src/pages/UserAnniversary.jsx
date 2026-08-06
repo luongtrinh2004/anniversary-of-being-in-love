@@ -88,8 +88,15 @@ export default function UserAnniversary() {
   const photos = config?.photos || [];
   const promises = config?.promises || [];
   const loveCoupons = config?.loveCoupons || [];
-  const musicSource = config?.music?.source || '/Từng Ngày Yêu Em _ buitruonglinh - (64 Kbps).mp3';
+  const musicPlaylist = config?.music?.playlist?.length
+    ? config.music.playlist
+    : [{ id: 'm1', name: 'Từng Ngày Yêu Em', source: config?.music?.source || '/music.mp3' }];
 
+  const { isPlaying, play, pause, currentTrackName, currentTrackIndex, totalTracks } = useAudio(
+    musicPlaylist,
+    config?.music?.volume || 0.6,
+    true
+  );
   const [selectedGiftId, setSelectedGiftId] = useState(() => config?.selectedGiftId || '');
   const [customGiftWish, setCustomGiftWish] = useState(() => config?.customGiftWish || '');
   const [isSavingWish, setIsSavingWish] = useState(false);
@@ -105,9 +112,6 @@ export default function UserAnniversary() {
 
   const timeTogether = useTimeTogether(anniversaryDate);
   const typedLetter = useTypewriter(loveLetter, 30, envelopeOpen);
-
-  const { isPlaying, play, pause } = useAudio(musicSource, config?.music?.volume || 0.6, true);
-
   const currentUserName = role === 'admin' ? creatorName : partnerName;
 
   const getUnreadCommentCount = (item) => {
@@ -303,15 +307,17 @@ export default function UserAnniversary() {
             {/* Audio Toggle */}
             <button
               onClick={isPlaying ? pause : play}
-              className={`px-2.5 py-1.5 rounded-full border transition-all flex items-center gap-1 text-xs font-semibold ${
+              className={`px-3 py-1.5 rounded-full border transition-all flex items-center gap-1.5 text-xs font-semibold ${
                 isPlaying
-                  ? 'bg-pink-500 text-white border-pink-600 shadow-glow'
+                  ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white border-pink-600 shadow-glow'
                   : 'bg-white/80 text-pink-600 border-pink-200 hover:bg-pink-50'
               }`}
-              title="Bật/Tắt nhạc nền lãng mạn (Từng Ngày Yêu Em)"
+              title="Bật/Tắt nhạc nền lãng mạn"
             >
               <Music className={`w-3.5 h-3.5 ${isPlaying ? 'animate-spin' : ''}`} style={{ animationDuration: '4s' }} />
-              <span className="hidden sm:inline">{isPlaying ? 'Từng Ngày Yêu Em' : 'Phát nhạc'}</span>
+              <span className="hidden sm:inline">
+                {isPlaying ? `${currentTrackName} (${currentTrackIndex}/${totalTracks})` : 'Phát nhạc'}
+              </span>
               {isPlaying ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
             </button>
 

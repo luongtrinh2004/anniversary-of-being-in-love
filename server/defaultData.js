@@ -139,6 +139,9 @@ export const defaultAnniversaryConfig = {
   ],
   music: {
     source: "/music.mp3",
-    volume: 0.6
+    volume: 0.6,
+    playlist: [
+      { id: "m1", name: "Từng Ngày Yêu Em - buitruonglinh", source: "/music.mp3" }
+    ]
   }
 };

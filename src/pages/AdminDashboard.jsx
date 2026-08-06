@@ -138,6 +138,51 @@ export default function AdminDashboard() {
     setFormData({ ...formData, timeline: newTimeline });
   };
 
+  const handleMusicFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const currentPlaylist = formData.music?.playlist?.length
+      ? formData.music.playlist
+      : [{ id: 'm1', name: 'Từng Ngày Yêu Em', source: formData.music?.source || '/music.mp3' }];
+
+    if (currentPlaylist.length >= 3) {
+      alert('Đã đạt tối đa 3 bài hát trong danh sách phát!');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const newTrack = {
+        id: 'm_' + Date.now(),
+        name: file.name.replace(/\.[^/.]+$/, ''),
+        source: reader.result
+      };
+      const updatedPlaylist = [...currentPlaylist, newTrack];
+      setFormData({
+        ...formData,
+        music: { ...formData.music, playlist: updatedPlaylist }
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemoveMusicTrack = (index) => {
+    const currentPlaylist = formData.music?.playlist?.length
+      ? formData.music.playlist
+      : [{ id: 'm1', name: 'Từng Ngày Yêu Em', source: formData.music?.source || '/music.mp3' }];
+
+    if (currentPlaylist.length <= 1) {
+      alert('Phải giữ lại ít nhất 1 bài hát trong danh sách phát!');
+      return;
+    }
+    const updated = currentPlaylist.filter((_, i) => i !== index);
+    setFormData({
+      ...formData,
+      music: { ...formData.music, playlist: updated }
+    });
+  };
+
   const handleAddCoupon = () => {
     const newCoupons = [
       ...(formData.loveCoupons || []),
@@ -332,19 +377,95 @@ export default function AdminDashboard() {
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Đường dẫn file Nhạc Nền (Public MP3 Path)</label>
-                <input
-                  type="text"
-                  value={formData.music?.source || ''}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      music: { ...formData.music, source: e.target.value }
-                    })
-                  }
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-slate-100 focus:border-pink-500 focus:outline-none"
-                />
+              <div className="sm:col-span-2 p-5 bg-slate-900/80 border border-slate-700/80 rounded-2xl space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <h4 className="text-sm font-bold text-pink-400 flex items-center gap-2">
+                      <Music className="w-4 h-4 text-pink-400" />
+                      <span>Danh sách Nhạc Nền Phát Lần Lượt (Tối đa 3 bài MP3)</span>
+                    </h4>
+                    <p className="text-[11px] text-slate-400 mt-0.5">
+                      Hệ thống tự động phát lần lượt 1 ➔ 2 ➔ 3 và lặp lại xoay vòng (1 ➔ 2 ➔ 3 ➔ 1...)
+                    </p>
+                  </div>
+
+                  {((formData.music?.playlist?.length || (formData.music?.source ? 1 : 0)) < 3) && (
+                    <label className="px-3 py-1.5 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-md shrink-0">
+                      <Plus className="w-4 h-4" />
+                      <span>Tải file MP3 từ máy (Tối đa 3 bài)</span>
+                      <input
+                        type="file"
+                        accept="audio/mp3,audio/*"
+                        onChange={handleMusicFileUpload}
+                        className="hidden"
+                      />
+                    </label>
+                  )}
+                </div>
+
+                {/* Playlist Tracks list */}
+                <div className="space-y-3">
+                  {(formData.music?.playlist?.length
+                    ? formData.music.playlist
+                    : [{ id: 'm1', name: 'Từng Ngày Yêu Em', source: formData.music?.source || '/music.mp3' }]
+                  ).map((track, idx) => (
+                    <div key={track.id || idx} className="p-3 bg-slate-800/90 border border-slate-700 rounded-xl flex items-center gap-3 relative">
+                      <div className="w-8 h-8 rounded-full bg-pink-500/20 border border-pink-400/40 flex items-center justify-center text-pink-300 font-bold text-xs shrink-0">
+                        #{idx + 1}
+                      </div>
+
+                      <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div>
+                          <label className="block text-[10px] text-slate-400">Tên bài hát #{idx + 1}</label>
+                          <input
+                            type="text"
+                            value={track.name || ''}
+                            onChange={(e) => {
+                              const current = formData.music?.playlist?.length
+                                ? [...formData.music.playlist]
+                                : [{ id: 'm1', name: 'Từng Ngày Yêu Em', source: formData.music?.source || '/music.mp3' }];
+                              current[idx].name = e.target.value;
+                              setFormData({
+                                ...formData,
+                                music: { ...formData.music, playlist: current }
+                              });
+                            }}
+                            placeholder={`Tên bài hát ${idx + 1}...`}
+                            className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[10px] text-slate-400">Đường dẫn file MP3 / DataURL</label>
+                          <input
+                            type="text"
+                            value={track.source || ''}
+                            onChange={(e) => {
+                              const current = formData.music?.playlist?.length
+                                ? [...formData.music.playlist]
+                                : [{ id: 'm1', name: 'Từng Ngày Yêu Em', source: formData.music?.source || '/music.mp3' }];
+                              current[idx].source = e.target.value;
+                              setFormData({
+                                ...formData,
+                                music: { ...formData.music, playlist: current }
+                              });
+                            }}
+                            placeholder="/music.mp3 hoặc dán URL..."
+                            className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"
+                          />
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => handleRemoveMusicTrack(idx)}
+                        className="p-2 bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white rounded-lg transition-all shrink-0"
+                        title="Xóa bài hát này"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div>
