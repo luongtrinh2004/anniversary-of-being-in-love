@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: anniversary-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  app:
+    build: .
+    container_name: anniversary-app
+    restart: always
+    ports:
+      - "5001:5001"
+      - "5173:5173"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/anniversary_db
+    depends_on:
+      - mongodb
+
+volumes:
+  mongo-data:
