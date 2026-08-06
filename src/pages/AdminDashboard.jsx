@@ -104,23 +104,37 @@ export default function AdminDashboard() {
     reader.readAsDataURL(file);
   };
 
+  const handleTimelinePhotoUpload = (e, index) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const updated = [...(formData.timeline || [])];
+      updated[index].photoUrl = reader.result;
+      setFormData({ ...formData, timeline: updated });
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleAddTimeline = () => {
     const newTimeline = [
-      ...formData.timeline,
+      ...(formData.timeline || []),
       {
         id: 't_' + Date.now(),
         title: 'Cột mốc mới',
         date: new Date().toISOString().split('T')[0],
-        iconName: 'Heart',
+        iconName: 'Sparkles',
         description: 'Mô tả câu chuyện ngọt ngào...',
-        photoUrl: ''
+        photoUrl: '',
+        comments: []
       }
     ];
     setFormData({ ...formData, timeline: newTimeline });
   };
 
   const handleRemoveTimeline = (index) => {
-    const newTimeline = formData.timeline.filter((_, i) => i !== index);
+    const newTimeline = (formData.timeline || []).filter((_, i) => i !== index);
     setFormData({ ...formData, timeline: newTimeline });
   };
 
@@ -478,17 +492,45 @@ export default function AdminDashboard() {
                   </div>
 
                   <div>
-                    <label className="block text-[11px] text-slate-400">Link ảnh đính kèm (URL)</label>
-                    <input
-                      type="text"
-                      value={item.photoUrl || ''}
-                      onChange={(e) => {
-                        const updated = [...formData.timeline];
-                        updated[index].photoUrl = e.target.value;
-                        setFormData({ ...formData, timeline: updated });
-                      }}
-                      className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white"
-                    />
+                    <label className="block text-[11px] text-slate-400 mb-1">Ảnh đính kèm mốc kỷ niệm</label>
+                    <div className="flex items-center gap-3">
+                      {item.photoUrl ? (
+                        <img
+                          src={item.photoUrl}
+                          alt=""
+                          className="w-16 h-16 object-cover rounded-xl border border-slate-700 shrink-0"
+                        />
+                      ) : (
+                        <div className="w-16 h-16 rounded-xl border border-dashed border-slate-700 bg-slate-800/60 flex items-center justify-center text-slate-500 text-[10px] text-center p-1 shrink-0">
+                          Chưa có ảnh
+                        </div>
+                      )}
+
+                      <div className="flex-1 space-y-1.5">
+                        <input
+                          type="text"
+                          value={item.photoUrl || ''}
+                          onChange={(e) => {
+                            const updated = [...formData.timeline];
+                            updated[index].photoUrl = e.target.value;
+                            setFormData({ ...formData, timeline: updated });
+                          }}
+                          placeholder="Dán link ảnh URL hoặc tải ảnh từ máy bên dưới ->"
+                          className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white"
+                        />
+
+                        <label className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-pink-500/20 hover:bg-pink-500/30 text-pink-300 border border-pink-500/40 rounded-xl text-xs font-semibold cursor-pointer transition-all">
+                          <Plus className="w-3.5 h-3.5" />
+                          <span>Tải ảnh từ máy cho mốc này</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleTimelinePhotoUpload(e, index)}
+                            className="hidden"
+                          />
+                        </label>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
